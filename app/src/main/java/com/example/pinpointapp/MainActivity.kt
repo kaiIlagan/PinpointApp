@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.backendless.Backendless
+import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.example.pinpointapp.domain.model.Person
 import com.example.pinpointapp.keys.Keys.API_KEY
 import com.example.pinpointapp.keys.Keys.APP_ID
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +19,52 @@ class MainActivity : ComponentActivity() {
 
         Backendless.initApp(this, APP_ID, API_KEY)
 
-        //saveAPerson((floor(Math.random() * 100)).toInt(), "Amber");
-        //retrieveAPerson();
-        updateAPerson()
+        //saveAPerson((floor(Math.random() * 100)).toInt(), "Kai")
+        //retrieveAPerson()
+        //updateAPerson()
+        //deleteFirstPerson()
+        //registerUser("dummyuser@backendless.com", "supe3rs3cre3t")
+        //loginUser("james.bond@mi6.co.uk","supe3rs3cre3t" )
 
     }
 }
+
+
+fun loginUser(email: String, password: String){
+    val tag = "UserLogin"
+
+    Backendless.UserService.login(email, password, object: AsyncCallback<BackendlessUser>{
+        override fun handleResponse(response: BackendlessUser?) {
+            Log.d(tag, "Successfully logged in User")
+        }
+
+        override fun handleFault(fault: BackendlessFault?) {
+            Log.e(tag, fault.toString())
+        }
+
+    })
+
+}
+
+fun registerUser(email: String, password: String){
+    val tag = "UserRegistration"
+    val user = BackendlessUser()
+    user.email = email
+    user.password = password
+
+
+    Backendless.UserService.register( user, object: AsyncCallback<BackendlessUser>{
+        override fun handleResponse(response: BackendlessUser?) {
+           Log.d(tag, "Successfully registered User")
+        }
+
+        override fun handleFault(fault: BackendlessFault?) {
+            Log.e(tag, fault.toString())
+        }
+
+    })
+}
+
 
  fun saveAPerson(age: Int, name: String) {
     val objToSave = Person(age, name)
@@ -64,8 +106,8 @@ fun retrieveAPerson() {
 }
 
 fun updateAPerson() {
-    var person: Person;
-    val tag = "UpdatePerson";
+    var person: Person
+    val tag = "UpdatePerson"
 
     Backendless.Data.of(Person::class.java).findFirst(object: AsyncCallback<Person>{
         override fun handleResponse(response: Person?) {
@@ -96,4 +138,33 @@ fun updateAPerson() {
         }
 
     });
+}
+
+fun deleteFirstPerson(){
+    var person: Person
+    val tag = "DeleteFirstPerson"
+
+    Backendless.Data.of(Person::class.java).findFirst(object: AsyncCallback<Person> {
+        override fun handleResponse(response: Person?) {
+            if (response != null){
+                person = response
+                Backendless.Data.of(Person::class.java).remove(person, object: AsyncCallback<Long>{
+                    override fun handleResponse(response: Long?) {
+                        Log.d(tag, "Successfully removed " + person.name + " " + person.age)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        Log.e(tag, fault.toString())
+                    }
+
+                });
+            } else {
+                Log.d(tag, "Got a response, however it was null, database may be empty")
+            }
+        }
+
+        override fun handleFault(fault: BackendlessFault?) {
+           Log.e(tag, fault.toString())
+        }
+    })
 }
