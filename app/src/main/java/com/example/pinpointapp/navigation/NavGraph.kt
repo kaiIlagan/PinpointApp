@@ -4,11 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pinpointapp.presentation.screen.login.LoginScreen
 
+// Please see readme.txt for attributions of code
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Login.route) {
-        composable(route = Screen.Login.route) {}
+        composable(route = Screen.Login.route) {
+            LoginScreen(navController = navController)
+        }
         composable(route = Screen.Home.route) {}
         composable(route = Screen.Details.route) {}
         composable(route = Screen.Liked.route) {}

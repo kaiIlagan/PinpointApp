@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.pinpointapp.domain.model.MessageBarState
 import kotlinx.coroutines.delay
 
-// MessageBar.kt is taken and modeled for projects use from Udemy Course Android & Web App Development using the Backendless Platform by Stefan Jovanovic here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/learn/lecture/32470154#overview
+// Please see readme.txt for attributions of code
 @Composable
 fun MessageBar(messageBarState: MessageBarState?) {
     var startAnimation by remember {

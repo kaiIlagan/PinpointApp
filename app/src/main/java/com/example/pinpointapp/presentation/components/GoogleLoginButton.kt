@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+// Please see readme.txt for attributions of code
 @Composable
 fun GoogleLoginButton(
     modifier: Modifier = Modifier,
@@ -60,7 +61,7 @@ fun GoogleLoginButton(
             Icon(
                 imageVector = Icons.Default.Login,
                 contentDescription = "Login Icon",
-                tint = Color.Unspecified
+                tint = MaterialTheme.colors.onBackground
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(text = buttonText)
