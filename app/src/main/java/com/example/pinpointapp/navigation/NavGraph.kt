@@ -15,7 +15,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Home.route) {}
         composable(route = Screen.Details.route) {}
-        composable(route = Screen.Liked.route) {}
+        composable(route = Screen.Pinned.route) {}
         composable(route = Screen.Saved.route) {}
         composable(route = Screen.Submitted.route) {}
         composable(route = Screen.Create.route) {}

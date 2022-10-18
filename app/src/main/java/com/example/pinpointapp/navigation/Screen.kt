@@ -5,8 +5,9 @@ sealed class Screen(val route: String) {
     object Login : Screen(route = "login")
     object Home : Screen(route = "home")
     object Details : Screen(route = "details")
-    object Liked : Screen(route = "liked")
     object Saved : Screen(route = "saved")
+    object Pinned : Screen(route = "pinned")
+    object Map : Screen(route = "map")
     object Submitted : Screen(route = "submitted")
     object Create : Screen(route = "create")
 }
