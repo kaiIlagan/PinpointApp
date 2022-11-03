@@ -14,6 +14,7 @@ import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.example.pinpointapp.navigation.Screen
 import com.example.pinpointapp.presentation.screen.StartActivityForResult
+import com.example.pinpointapp.presentation.screen.logout
 import com.example.pinpointapp.presentation.screen.signIn
 
 // Please see readme.txt for attributions of code
@@ -63,7 +64,12 @@ fun LoginScreen(
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
-                        Log.e(tag, fault.toString())
+                        logout(
+                            onSuccess = {
+                                Log.d(tag, "Success!")
+                            }, onFailed = {
+                                Log.e(tag, it)
+                            })
                     }
                 },
                 false
