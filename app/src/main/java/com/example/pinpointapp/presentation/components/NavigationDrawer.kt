@@ -1,5 +1,6 @@
 package com.example.pinpointapp.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,11 @@ fun NavigationDrawer(
     logoutFailed: () -> Unit
 ) {
     DrawerHeader()
+    DrawerBody(
+        navController = navController,
+        scaffoldState = scaffoldState,
+        logoutFailed = logoutFailed
+    )
 }
 
 @Composable
@@ -81,19 +87,28 @@ fun DrawerBody(
                         }
                     }
                     if (drawerItem == DrawerItem.Logout) {
-                        logout(
-                            onSuccess = {},
-                            onFailed = {}
-                        )
+                        if (drawerItem == DrawerItem.Logout) {
+                            logout(
+                                onSuccess = {
+                                    navController.popBackStack()
+                                    navController.navigate(Screen.Login.route)
+                                },
+                                onFailed = {
+                                    Log.d("Logout", it)
+                                    logoutFailed()
+                                }
+                            )
+                        }
+                    }
+                    scope.launch {
+                        scaffoldState.drawerState.close()
                     }
                 }
             )
-            scope.launch {
-                scaffoldState.drawerState.close()
-            }
         }
     }
 }
+
 
 @Composable
 fun DrawerItem(
@@ -128,14 +143,14 @@ fun DrawerItem(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun DrawerHeadPreview() {
     DrawerHeader()
 }
 
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun DrawerBodyPreview() {
     DrawerBody(
         navController = rememberNavController(),
