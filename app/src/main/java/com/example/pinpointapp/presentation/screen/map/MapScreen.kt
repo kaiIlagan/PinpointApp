@@ -1,4 +1,4 @@
-package com.example.pinpointapp.presentation.screen.data
+package com.example.pinpointapp.presentation.screen.map
 
 import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DataScreen(navController: NavHostController) {
+fun MapScreen(navController: NavHostController) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
