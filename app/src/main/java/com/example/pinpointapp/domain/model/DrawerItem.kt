@@ -9,38 +9,44 @@ sealed class DrawerItem(
     val icon: ImageVector,
     val title: String,
     val route: String
-){
-    object Map: DrawerItem(
+) {
+    object Map : DrawerItem(
         icon = Icons.Default.Map,
         title = "Map",
         route = Screen.Map.route
     )
-    object Data: DrawerItem(
+
+    object Data : DrawerItem(
         icon = Icons.Default.Storage,
-        title = "Data",
+        title = "Point Database",
         route = Screen.Data.route
     )
-    object Saved: DrawerItem(
+
+    object Saved : DrawerItem(
         icon = Icons.Default.Bookmarks,
         title = "Saved Points",
         route = Screen.Saved.route
     )
-    object Pinned: DrawerItem(
+
+    object Pinned : DrawerItem(
         icon = Icons.Default.PushPin,
         title = "Pinned Points",
         route = Screen.Pinned.route
     )
-    object Submitted: DrawerItem(
+
+    object Submitted : DrawerItem(
         icon = Icons.Default.CloudUpload,
         title = "Submitted Points",
         route = Screen.Submitted.route
     )
-    object Create: DrawerItem(
+
+    object Create : DrawerItem(
         icon = Icons.Default.CreateNewFolder,
         title = "Create Point Set",
         route = Screen.Create.route
     )
-    object Logout: DrawerItem(
+
+    object Logout : DrawerItem(
         icon = Icons.Default.Logout,
         title = "Logout",
         route = Screen.Login.route
