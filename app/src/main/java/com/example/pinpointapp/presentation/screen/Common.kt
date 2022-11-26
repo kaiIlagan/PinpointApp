@@ -37,15 +37,15 @@ fun StartActivityForResult(
     val scope = rememberCoroutineScope()
     val activityLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
-    ){ activityResult ->  
+    ) { activityResult ->
         try {
-            if(activityResult.resultCode == Activity.RESULT_OK){
-                val result = activityResult.data?.let {
-                    intent -> Auth.GoogleSignInApi.getSignInResultFromIntent(intent)
+            if (activityResult.resultCode == Activity.RESULT_OK) {
+                val result = activityResult.data?.let { intent ->
+                    Auth.GoogleSignInApi.getSignInResultFromIntent(intent)
                 }
                 val serverAuthCode = result?.signInAccount?.serverAuthCode
                 Log.d(tag, "ACCESS TOKEN: $serverAuthCode")
-                scope.launch(Dispatchers.IO){
+                scope.launch(Dispatchers.IO) {
                     onResultReceived(getAccessToken(authCode = serverAuthCode))
                 }
             } else {
@@ -74,7 +74,7 @@ private fun getAccessToken(authCode: String?): String? {
             authCode,
             "https://api.backendless.com/99C0754B-6B4E-417F-FF30-6281C4DFFB00/5BFB4C5E-104D-45E0-8705-1CBD1031D60B/users/oauth/googleplus/authorize"
         ).execute()
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         Log.d("getAccessToken", e.message.toString())
         return null
     }
@@ -94,15 +94,17 @@ fun signIn(
     launcher.launch(client.signInIntent)
 }
 
-fun logout(onSuccess: () -> Unit, onFailed: (String) -> Unit){
+fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
     Backendless.UserService.logout(
-        object: AsyncCallback<Void> {
+        object : AsyncCallback<Void> {
             override fun handleResponse(response: Void?) {
+                Log.d("Logout", "Success")
                 onSuccess()
             }
 
             override fun handleFault(fault: BackendlessFault?) {
-                onFailed(fault?.message.toString())
+                Log.e("Logout", fault?.message.toString())
+                onFailed()
             }
 
         }

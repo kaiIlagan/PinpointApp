@@ -57,19 +57,15 @@ fun LoginScreen(
                     "family_name" to "last_name",
                     "picture" to "profile_photo"
                 ),
-                object: AsyncCallback<BackendlessUser> {
+                object : AsyncCallback<BackendlessUser> {
                     val tag = "LoginScreen"
                     override fun handleResponse(response: BackendlessUser?) {
-                        Log.d(tag, "$response")
+                        navController.popBackStack()
+                        navController.navigate(Screen.Map.route)
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
-                        logout(
-                            onSuccess = {
-                                Log.d(tag, "Success!")
-                            }, onFailed = {
-                                Log.e(tag, it)
-                            })
+                        logout(onSuccess = {}, onFailed = {})
                     }
                 },
                 false
@@ -80,9 +76,8 @@ fun LoginScreen(
             loginViewModel.updateMessageBarState(message = it)
 
         },
-        launcher = {
-            activityLauncher ->
-            if(signedInState) {
+        launcher = { activityLauncher ->
+            if (signedInState) {
                 signIn(activity = activity, launcher = activityLauncher)
             }
         })
