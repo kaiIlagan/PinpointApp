@@ -14,9 +14,10 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = Screen.Login.route) {
             LoginScreen(navController = navController)
         }
-        composable(route = Screen.Data.route) {
+        composable(route = Screen.Map.route) {
             MapScreen(navController = navController)
         }
+        composable(route = Screen.Data.route) {}
         composable(route = Screen.Details.route) {}
         composable(route = Screen.Pinned.route) {}
         composable(route = Screen.Saved.route) {}
