@@ -60,11 +60,13 @@ fun LoginScreen(
                 object : AsyncCallback<BackendlessUser> {
                     val tag = "LoginScreen"
                     override fun handleResponse(response: BackendlessUser?) {
+                        Log.d(tag, response.toString())
                         navController.popBackStack()
                         navController.navigate(Screen.Map.route)
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
+                        Log.e(tag, fault.toString())
                         logout(onSuccess = {}, onFailed = {})
                     }
                 },

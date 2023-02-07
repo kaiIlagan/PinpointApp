@@ -14,11 +14,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.backendless.persistence.Point
+import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.keys.Keys.CLIENT_ID
 import com.example.pinpointapp.keys.Keys.CLIENT_SECRET
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.maps.model.LatLng
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -109,4 +112,12 @@ fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
 
         }
     )
+}
+
+fun extractPoints(pointSet: PointSet?): List<Point> {
+    if (pointSet != null) {
+        return pointSet.points?.points!!
+    } else {
+        return emptyList()
+    }
 }
