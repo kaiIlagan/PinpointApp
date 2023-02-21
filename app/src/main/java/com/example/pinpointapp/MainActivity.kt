@@ -9,6 +9,10 @@ import com.example.pinpointapp.keys.Keys.API_KEY
 import com.example.pinpointapp.keys.Keys.APP_ID
 import com.example.pinpointapp.navigation.SetupNavGraph
 import com.example.pinpointapp.ui.theme.PinpointAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

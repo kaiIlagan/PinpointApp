@@ -1,7 +1,6 @@
 package com.example.pinpointapp.presentation.screen
 
 import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -21,7 +20,6 @@ import com.example.pinpointapp.keys.Keys.CLIENT_SECRET
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.maps.model.LatLng
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -83,6 +81,7 @@ private fun getAccessToken(authCode: String?): String? {
     }
     return tokenResponse.accessToken
 }
+
 
 fun signIn(
     activity: Activity,

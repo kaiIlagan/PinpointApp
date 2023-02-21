@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pinpointapp.presentation.screen.data.DataScreen
 import com.example.pinpointapp.presentation.screen.map.MapScreen
 import com.example.pinpointapp.presentation.screen.login.LoginScreen
 
@@ -17,7 +18,9 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = Screen.Map.route) {
             MapScreen(navController = navController)
         }
-        composable(route = Screen.Data.route) {}
+        composable(route = Screen.Data.route) {
+
+        }
         composable(route = Screen.Details.route) {}
         composable(route = Screen.Pinned.route) {}
         composable(route = Screen.Saved.route) {}
