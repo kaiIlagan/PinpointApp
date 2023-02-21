@@ -13,10 +13,12 @@ fun MapScreen(navController: NavHostController) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {},
+        topBar = { MapTopBar(scaffoldState = scaffoldState) },
         drawerContent = {
 
         },
-        content = {}
+        content = {
+            
+        }
     )
 }
