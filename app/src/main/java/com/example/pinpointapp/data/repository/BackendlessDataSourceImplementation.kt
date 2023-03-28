@@ -17,19 +17,26 @@ class BackendlessDataSourceImplementation @Inject constructor(
     override suspend fun getPointSets(): List<PointSet> {
         val queryBuilder: DataQueryBuilder = DataQueryBuilder
             .create()
-            .setProperties("Count(likes) as totalLikes", "points", "approved", "objectId", "title")
+            .setProperties(
+                "Count(likes) as totalLikes",
+                "points",
+                "approved",
+                "objectId",
+                "desc",
+                "title"
+            )
             .setWhereClause("approved = true")
             .setGroupBy("objectId")
         return suspendCoroutine { continuation ->
             backendless.of(PointSet::class.java)
                 .find(queryBuilder, object : AsyncCallback<List<PointSet>> {
                     override fun handleResponse(response: List<PointSet>) {
-                        Log.d("Get Point Sets", "Success")
+                        Log.d("GetPointSets", "Success")
                         continuation.resume(response)
                     }
 
                     override fun handleFault(fault: BackendlessFault) {
-                        Log.e("Get Point Sets", fault.toString())
+                        Log.e("GetPointSets", fault.toString())
                         continuation.resume(emptyList())
                     }
 

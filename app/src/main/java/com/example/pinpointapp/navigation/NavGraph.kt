@@ -19,7 +19,7 @@ fun SetupNavGraph(navController: NavHostController) {
             MapScreen(navController = navController)
         }
         composable(route = Screen.Data.route) {
-
+            DataScreen(navController = navController)
         }
         composable(route = Screen.Details.route) {}
         composable(route = Screen.Pinned.route) {}

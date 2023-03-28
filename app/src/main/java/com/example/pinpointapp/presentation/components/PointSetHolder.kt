@@ -1,13 +1,12 @@
 package com.example.pinpointapp.presentation.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HourglassBottom
@@ -19,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.backendless.persistence.Point
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.presentation.screen.extractPoints
+import com.example.pinpointapp.ui.theme.topAppBarContentColor
 
 @Composable
 fun PointSetHolder(
@@ -31,15 +32,21 @@ fun PointSetHolder(
 ) {
     Box(
         modifier = Modifier
-            .height(200.dp)
+            .height(100.dp)
             .fillMaxWidth()
+            .border(width = 1.dp, color = MaterialTheme.colors.topAppBarContentColor, shape = RoundedCornerShape(25.dp))
             .clickable(enabled = pointSet.approved) {
                 onClick()
             },
-        contentAlignment = Alignment.BottomEnd
     ) {
-        PointSet(pointSet = pointSet)
-        NumberOfLikes(number = pointSet.totalLikes ?: 0)
+        Column(modifier = Modifier
+            .align(Alignment.CenterStart)
+            .padding(start = 12.dp)) {
+            PointSet(pointSet = pointSet)
+        }
+        Surface(modifier = Modifier.align(Alignment.CenterEnd)) {
+            NumberOfLikes(number = pointSet.totalLikes ?: 0)
+        }
         if (!pointSet.approved) {
             WaitingForApproval()
         }
@@ -60,7 +67,7 @@ fun PointSet(pointSet: PointSet) {
 fun NumberOfLikes(number: Int) {
     Surface(
         modifier = Modifier
-            .padding(end = 12.dp, bottom = 12.dp),
+            .padding(end = 12.dp),
         shape = RoundedCornerShape(size = 50.dp),
         color = Color.Black.copy(alpha = ContentAlpha.disabled)
     ) {
@@ -103,5 +110,13 @@ fun WaitingForApproval() {
             text = "Waiting for approval",
             color = Color.White
         )
+    }
+}
+
+@Preview
+@Composable
+fun PointSetHolderPreview() {
+    PointSetHolder(pointSet = PointSet(objectId = "0", "Test", "Desc", approved = true, null, 1)) {
+
     }
 }
