@@ -32,6 +32,6 @@ object MainModule {
     @Provides
     @Singleton
     fun provideRepository(backendlessDataSource: BackendlessDataSource): Repository {
-        return RepositoryImplementation(backendless = backendlessDataSource)
+        return RepositoryImplementation(backendlessDataSource = backendlessDataSource)
     }
 }
