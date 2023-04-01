@@ -23,16 +23,12 @@ class RepositoryImplementation @Inject constructor(
         return backendlessDataSource.observeDeleteRelation()
     }
 
-    override suspend fun observeApprovedSets(ownerId: String): Flow<PointSet> {
-        TODO("Not yet implemented")
+    override suspend fun observeApproval(): Flow<PointSet> {
+        return backendlessDataSource.observeApproval()
     }
 
-    override suspend fun observeNotApprovedSets(ownerId: String): Flow<PointSet> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun observeDeletedSets(ownerId: String): Flow<Point> {
-        TODO("Not yet implemented")
+    override suspend fun observeDeletedSets(): Flow<PointSet> {
+        return backendlessDataSource.observeDeletedSets()
     }
 
     override suspend fun getLikeCount(objectId: String): PointSet {

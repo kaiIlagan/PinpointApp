@@ -39,7 +39,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
             backendless.of(PointSet::class.java)
                 .find(queryBuilder, object : AsyncCallback<List<PointSet>> {
                     override fun handleResponse(response: List<PointSet>) {
-                        Log.d("GetPointSets", "Success")
+                        Log.d("GetPointSets", "$response")
                         continuation.resume(response)
                     }
 
@@ -91,16 +91,45 @@ class BackendlessDataSourceImplementation @Inject constructor(
         }
     }
 
-    override suspend fun observeApprovedSets(ownerId: String): Flow<PointSet> {
-        TODO("Not yet implemented")
+    override suspend fun observeApproval(): Flow<PointSet> {
+        return callbackFlow {
+            Log.d("observeApproval", "here")
+            val event = backendless.of(PointSet::class.java).rt()
+            val callback = object : AsyncCallback<PointSet> {
+                override fun handleResponse(response: PointSet) {
+                    Log.d("observeApproval", response.toString())
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    Log.d("observeApproval", fault.toString())
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            event.addUpdateListener("approved = false or approved = true", callback)
+            awaitClose {
+                event.removeUpdateListeners()
+            }
+        }
     }
 
-    override suspend fun observeNotApprovedSets(ownerId: String): Flow<PointSet> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun observeDeletedSets(): Flow<PointSet> {
+        return callbackFlow {
+            val event = backendless.of(PointSet::class.java).rt()
+            val callback = object : AsyncCallback<PointSet> {
+                override fun handleResponse(response: PointSet) {
+                    trySendBlocking(response)
+                }
 
-    override suspend fun observeDeletedSets(ownerId: String): Flow<Point> {
-        TODO("Not yet implemented")
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            event.addDeleteListener(callback)
+            awaitClose {
+                event.removeDeleteListeners()
+            }
+        }
     }
 
     override suspend fun getLikeCount(objectId: String): PointSet {

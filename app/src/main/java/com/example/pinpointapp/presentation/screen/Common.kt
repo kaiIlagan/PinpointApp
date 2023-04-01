@@ -112,11 +112,3 @@ fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
         }
     )
 }
-
-fun extractPoints(pointSet: PointSet?): List<Point> {
-    if (pointSet != null) {
-        return pointSet.points?.points!!
-    } else {
-        return emptyList()
-    }
-}

@@ -21,6 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.backendless.Backendless
+import com.backendless.persistence.Geometry
+import com.backendless.persistence.LineString
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.ui.theme.topAppBarContentColor
 
@@ -61,7 +64,7 @@ fun PointSetHolder(
 @Composable
 fun PointSet(pointSet: PointSet) {
     Column {
-        val numOfPoints = pointSet.points?.points?.size
+        val numOfPoints = pointSet.points.points.size
         pointSet.title?.let { Text(it) }
         pointSet.desc?.let { Text(it) }
         Text("$numOfPoints points")
@@ -121,7 +124,16 @@ fun WaitingForApproval() {
 @Preview
 @Composable
 fun PointSetHolderPreview() {
-    PointSetHolder(pointSet = PointSet(objectId = "0", "Test", "Desc", approved = true, null, 1)) {
+    PointSetHolder(
+        pointSet = PointSet(
+            objectId = "0",
+            "Test",
+            "Desc",
+            approved = true,
+            LineString.fromWKT("LINESTRING (-87.39646496 46.54275131, -87.40774155 46.56027672, -87.41354585 46.56463638)"),
+            1
+        )
+    ) {
 
     }
 }

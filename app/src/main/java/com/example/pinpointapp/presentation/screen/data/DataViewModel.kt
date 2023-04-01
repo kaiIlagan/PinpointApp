@@ -25,15 +25,20 @@ class DataViewModel @Inject constructor(
         getPointSets()
         observeAddRelation()
         observeDeleteRelation()
+        observeApproval()
+        observeDeletedSets()
     }
 
     private fun getPointSets() {
         viewModelScope.launch(Dispatchers.IO) {
             pointSets.addAll(repository.getPointSets())
+            pointSets.forEach {
+                Log.d("DataViewModel", "${it.points.toString()}")
+            }
         }
     }
 
-    private fun observeAddRelation() { // Observes "listens" to changes to our like column, when it is recieved the data is collected
+    private fun observeAddRelation() { // Observes or "listens" to changes to our like column, when it is recieved the data is collected
         viewModelScope.launch(Dispatchers.IO) {
             repository.observeAddRelation().collect { addRelation ->
                 Log.d("HomeViewModel", "$addRelation")
@@ -42,11 +47,36 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    private fun observeDeleteRelation() { // Observes "listens" to changes to our like column, when it is recieved the data is collected
+    private fun observeDeleteRelation() { // Observes or "listens" to changes to our like column, when it is recieved the data is collected
         viewModelScope.launch(Dispatchers.IO) {
             repository.observeDeleteRelation().collect { deleteRelation ->
                 Log.d("HomeViewModel", "$deleteRelation")
                 updateNumOfLikes(relationStatus = deleteRelation)
+            }
+        }
+    }
+
+    private fun observeApproval() { // Observes or "listens" to changes for a PointSet based on approval/disapproval
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.observeApproval().collect { set ->
+                Log.d("observeApproval", "${set.points.toString()}")
+                if (set.approved) {
+                    pointSets.add(set)
+                } else {
+                    pointSets.removeAll {
+                        it.objectId == set.objectId
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeDeletedSets() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.observeDeletedSets().collect() { set ->
+                pointSets.removeAll {
+                    it.objectId == set.objectId
+                }
             }
         }
     }
