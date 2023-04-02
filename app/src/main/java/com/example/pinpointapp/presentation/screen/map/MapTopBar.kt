@@ -17,7 +17,9 @@ fun MapTopBar(scaffoldState: ScaffoldState) {
         backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
         navigationIcon = {
             IconButton(onClick = {
-                scope.launch { scaffoldState.drawerState.open() }
+                scope.launch {
+                    scaffoldState.drawerState.open()
+                }
             }) {
                 Icon(
                     imageVector = Icons.Filled.Menu,

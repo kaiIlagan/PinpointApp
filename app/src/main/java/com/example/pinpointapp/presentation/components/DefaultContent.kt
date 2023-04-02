@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pinpointapp.domain.model.PointSet
+import com.example.pinpointapp.keys.Keys.SELECTED_POINTS_KEY
+import com.example.pinpointapp.navigation.Screen
 
 @Composable
 fun DefaultContent(
@@ -26,7 +28,13 @@ fun DefaultContent(
         ) {
             PointSetHolder(
                 pointSet = it,
-                onClick = {}
+                onClick = {
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = SELECTED_POINTS_KEY,
+                        value = it
+                    )
+                    navController.navigate(Screen.Details.route)
+                }
             )
         }
     }

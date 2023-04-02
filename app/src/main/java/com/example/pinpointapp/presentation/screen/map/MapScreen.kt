@@ -33,7 +33,7 @@ fun MapScreen(navController: NavHostController) {
             )
         },
         content = {
-           
+            MapContent()
         }
     )
 }

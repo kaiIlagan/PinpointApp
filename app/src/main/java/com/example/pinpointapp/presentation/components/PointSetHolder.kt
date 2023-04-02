@@ -61,10 +61,12 @@ fun PointSetHolder(
     }
 }
 
+
 @Composable
 fun PointSet(pointSet: PointSet) {
     Column {
-        val numOfPoints = pointSet.points.points.size
+        var lineString: LineString? = pointSet.points as LineString?
+        val numOfPoints = lineString!!.points.size
         pointSet.title?.let { Text(it) }
         pointSet.desc?.let { Text(it) }
         Text("$numOfPoints points")

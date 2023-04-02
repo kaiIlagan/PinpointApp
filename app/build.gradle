@@ -5,7 +5,12 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def mapsAPIKey = properties.getProperty('maps_api.key')
 
 android {
     compileSdk 33
@@ -25,6 +30,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        manifestPlaceholders = [MAPS_API_KEY: mapsAPIKey]
     }
 
     buildTypes {
@@ -70,10 +77,11 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
     // The two Dependencies below are taken from the installation guide for Maps Compose Library: https://github.com/googlemaps/android-maps-compose
-    implementation 'com.google.maps.android:maps-compose:2.7.0'
+    implementation 'com.google.maps.android:maps-compose:2.11.2'
+
 
     // Includes latest version of maps SDK
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     // Compose Navigation
     implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
