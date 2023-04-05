@@ -10,7 +10,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun MapContent() {
-    val singapore = LatLng(1.35, 103.87)
+    val singapore = LatLng(46.56002988360198, -87.40757001632488)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }

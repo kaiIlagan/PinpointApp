@@ -1,6 +1,7 @@
 package com.example.pinpointapp.presentation.screen.details
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +21,22 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun DetailsContent(
     pointSet: PointSet,
 ) {
-    val singapore = LatLng(1.35, 103.87)
+    var linesString: LineString = pointSet!!.points as LineString
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(
+            LatLng(linesString.points[0].y, linesString.points[0].x),
+            10f
+        )
     }
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
-    )
+    ) {
+        Log.d("lineString", linesString.toString())
+        linesString.points.forEach {
+            Log.d("lineString", "${it.x} , ${it.y}")
+            Marker(MarkerState((LatLng(it.y, it.x))), title = pointSet.title)
+        }
+    }
 }
 
