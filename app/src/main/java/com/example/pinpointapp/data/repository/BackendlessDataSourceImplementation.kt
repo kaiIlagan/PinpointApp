@@ -8,6 +8,7 @@ import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
 import com.backendless.rt.data.RelationStatus
 import com.example.pinpointapp.domain.model.PointSet
+import com.example.pinpointapp.domain.model.Users
 import com.example.pinpointapp.domain.repository.BackendlessDataSource
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -149,6 +150,71 @@ class BackendlessDataSourceImplementation @Inject constructor(
                     }
 
                 })
+        }
+    }
+
+    override suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet> {
+        val query = DataQueryBuilder.create()
+            .setWhereClause("Users[saved].object = '$userObjectId' and objectId = '$setObjectId'")
+
+        return suspendCoroutine { continuation ->
+            backendless.of(PointSet::class.java).find(
+                query,
+                object : AsyncCallback<List<PointSet>> {
+                    override fun handleResponse(response: List<PointSet>) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resume(emptyList())
+                    }
+
+                }
+            )
+        }
+    }
+
+    override suspend fun savePointSet(setObjectId: String, userObjectId: String): Int {
+        return suspendCoroutine { continuation ->
+            val user = Users(objectId = userObjectId)
+
+            backendless.of(Users::class.java).addRelation(
+                user,
+                "saved",
+                arrayListOf(PointSet(objectId = setObjectId)),
+                object : AsyncCallback<Int> {
+                    override fun handleResponse(response: Int) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
+        }
+    }
+
+    override suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int {
+        return suspendCoroutine { continuation ->
+            val user = Users(objectId = userObjectId)
+
+            backendless.of(Users::class.java).deleteRelation(
+                user,
+                "saved",
+                arrayListOf(PointSet(objectId = setObjectId)),
+                object : AsyncCallback<Int> {
+                    override fun handleResponse(response: Int) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
         }
     }
 }

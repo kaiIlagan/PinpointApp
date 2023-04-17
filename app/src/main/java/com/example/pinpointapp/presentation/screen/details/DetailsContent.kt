@@ -16,7 +16,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
-@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun DetailsContent(
     pointSet: PointSet,

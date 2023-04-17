@@ -13,4 +13,7 @@ interface Repository {
     suspend fun observeApproval(): Flow<PointSet> // Observer for when a Point Set is approved that is created by the User // Observer for when a Point Set is approved that is created by the User
     suspend fun observeDeletedSets(): Flow<PointSet> // Observe for when a Point Set is deleted from the database
     suspend fun getLikeCount(objectId: String): PointSet
+    suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet>
+    suspend fun savePointSet(setObjectId: String, userObjectId: String): Int
+    suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int
 }

@@ -112,3 +112,11 @@ fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
         }
     )
 }
+
+fun isConnectionError(message: String): String {
+    return if (message.contains("No address associated with hostname")) {
+        "No Internet Connection."
+    } else {
+        message
+    }
+}

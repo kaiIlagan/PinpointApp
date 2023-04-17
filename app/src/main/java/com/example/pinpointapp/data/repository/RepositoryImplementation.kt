@@ -34,4 +34,16 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun getLikeCount(objectId: String): PointSet {
         return backendlessDataSource.getLikeCount(objectId = objectId)
     }
+
+    override suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet> {
+        return backendlessDataSource.checkSavedSet(setObjectId, userObjectId)
+    }
+
+    override suspend fun savePointSet(setObjectId: String, userObjectId: String): Int {
+        return backendlessDataSource.savePointSet(setObjectId, userObjectId)
+    }
+
+    override suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int {
+        return backendlessDataSource.unsavePointSet(setObjectId, userObjectId)
+    }
 }
