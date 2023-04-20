@@ -1,5 +1,6 @@
 package com.example.pinpointapp.presentation.components
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,10 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HourglassBottom
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,13 +23,20 @@ import com.backendless.Backendless
 import com.backendless.persistence.Geometry
 import com.backendless.persistence.LineString
 import com.example.pinpointapp.domain.model.PointSet
+import com.example.pinpointapp.presentation.screen.getLineString
 import com.example.pinpointapp.ui.theme.topAppBarContentColor
+import kotlinx.coroutines.currentCoroutineContext
+import kotlin.coroutines.coroutineContext
 
 @Composable
 fun PointSetHolder(
     pointSet: PointSet,
     onClick: () -> Unit
 ) {
+
+    if (pointSet.points is LineString) {
+    } else pointSet.desc = "Please re-navigate to Data Screen to load points."
+
     Box(
         modifier = Modifier
             .height(100.dp)
@@ -42,7 +47,9 @@ fun PointSetHolder(
                 shape = RoundedCornerShape(25.dp)
             )
             .clickable(enabled = pointSet.approved) {
-                onClick()
+                if (pointSet.points is LineString) {
+                    onClick()
+                }
             },
     ) {
         Column(
@@ -65,7 +72,12 @@ fun PointSetHolder(
 @Composable
 fun PointSet(pointSet: PointSet) {
     Column {
-        var lineString: LineString? = pointSet.points as LineString?
+        var lineString: LineString?
+        try {
+            lineString = pointSet.points as LineString?
+        } catch (e: Exception) {
+            lineString = LineString(emptyList())
+        }
         val numOfPoints = lineString!!.points.size
         pointSet.title?.let { Text(it) }
         pointSet.desc?.let { Text(it) }

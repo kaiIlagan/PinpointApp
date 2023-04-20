@@ -9,12 +9,12 @@ interface BackendlessDataSource {
     suspend fun getPointSets(): List<PointSet> // Get Point Sets to populate Data Screen through DataViewModel, using data from
     suspend fun observeAddRelation(): Flow<RelationStatus?> // Observer for when a Point Set is liked and a User is "added" to that relation
     suspend fun observeDeleteRelation(): Flow<RelationStatus?> // Observer for when a Point Set is unliked and a User is "deleted" from that relation
-
     suspend fun observeApproval(): Flow<PointSet> // Observer for when a Point Set is approved that is created by the User
     suspend fun observeDeletedSets(): Flow<PointSet> // Observe for when a Point Set is deleted from the database
     suspend fun getLikeCount(objectId: String): PointSet
-
     suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet>
     suspend fun savePointSet(setObjectId: String, userObjectId: String): Int
     suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int
+
+
 }

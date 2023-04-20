@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.backendless.persistence.LineString
+import com.backendless.persistence.Point
 import com.backendless.rt.data.RelationStatus
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.domain.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,7 +60,18 @@ class DataViewModel @Inject constructor(
     private fun observeApproval() { // Observes or "listens" to changes for a PointSet based on approval/disapproval
         viewModelScope.launch(Dispatchers.IO) {
             repository.observeApproval().collect { set ->
-                Log.d("observeApproval", "${set.points.toString()}")
+                Log.d("observeApproval", set.points.toString())
+                var map = set.points as HashMap<*, *>
+                var points = mutableListOf<Point>()
+                val coordinates = map["coordinates"] as Array<Any>
+                coordinates.forEach {
+                    val values = it as Array<Any>
+                    val point = Point()
+                    point.x = values[0] as Double
+                    point.y = values[1] as Double
+                    points.add(point)
+                }
+                set.points = LineString(points)
                 if (set.approved) {
                     pointSets.add(set)
                 } else {

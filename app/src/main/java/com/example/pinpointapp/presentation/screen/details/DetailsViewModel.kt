@@ -1,5 +1,6 @@
 package com.example.pinpointapp.presentation.screen.details
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.pinpointapp.domain.repository.Repository
@@ -42,6 +43,8 @@ class DetailsViewModel @Inject constructor(
                 userObjectId = Backendless.UserService.CurrentUser().objectId
             )
 
+            Log.d("checkSavedSet", result.toString())
+            Log.d("checkSavedSet", "${result.any { it.objectId == objectId }}")
             isSaved = result.any { it.objectId == objectId }
         }
     }

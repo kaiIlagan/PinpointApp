@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.keys.Keys.SELECTED_POINTS_KEY
 import com.example.pinpointapp.navigation.Screen
+import com.google.common.base.Predicates.instanceOf
 
 @Composable
 fun DefaultContent(

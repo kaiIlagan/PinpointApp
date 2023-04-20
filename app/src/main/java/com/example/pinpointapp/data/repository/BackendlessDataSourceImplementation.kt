@@ -109,7 +109,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
             }
             event.addUpdateListener("approved = false or approved = true", callback)
             awaitClose {
-                event.removeUpdateListeners()
+                event.removeBulkUpdateListeners()
             }
         }
     }
@@ -128,7 +128,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
             }
             event.addDeleteListener(callback)
             awaitClose {
-                event.removeDeleteListeners()
+                event.removeBulkDeleteListeners()
             }
         }
     }
@@ -155,7 +155,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
 
     override suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet> {
         val query = DataQueryBuilder.create()
-            .setWhereClause("Users[saved].object = '$userObjectId' and objectId = '$setObjectId'")
+            .setWhereClause("Users[saved].objectId = '$userObjectId' and objectId = '$setObjectId'")
 
         return suspendCoroutine { continuation ->
             backendless.of(PointSet::class.java).find(
@@ -166,6 +166,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
+                        Log.d("bdslCheckSavedSet", fault.toString())
                         continuation.resume(emptyList())
                     }
 

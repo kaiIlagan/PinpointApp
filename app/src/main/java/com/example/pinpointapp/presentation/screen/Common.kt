@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.backendless.persistence.LineString
 import com.backendless.persistence.Point
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.keys.Keys.CLIENT_ID
@@ -111,6 +112,10 @@ fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
 
         }
     )
+}
+
+fun getLineString(pointSet: PointSet): LineString {
+    return pointSet.points as LineString
 }
 
 fun isConnectionError(message: String): String {
