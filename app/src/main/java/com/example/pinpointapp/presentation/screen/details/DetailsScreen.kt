@@ -23,6 +23,7 @@ fun DetailsScreen(
 ) {
     val isSaved = detailsViewModel.isSaved
     val selectedSet = detailsViewModel.selectedSet
+    val isPinned = detailsViewModel.isPinned
 
     val scaffoldState = rememberScaffoldState()
 
@@ -44,9 +45,9 @@ fun DetailsScreen(
         topBar = {
             DetailsTopBar(
                 isSaved = isSaved,
-                isPinned = false,
+                isPinned = isPinned,
                 onBackClicked = { navController.popBackStack() },
-                onPinClicked = { },
+                onPinClicked = { detailsViewModel.pinPointSet() },
                 onSaveClicked = { detailsViewModel.savePointSet() }
             )
         },

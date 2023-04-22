@@ -57,7 +57,7 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    private fun observeApproval() { // Observes or "listens" to changes for a PointSet based on approval/disapproval
+    private fun observeApproval() { // Observes or "listens" to changes for a PointSet based on approval/disapproval. Has a great story of overcoming bugs and unpacking an "unknown" object
         viewModelScope.launch(Dispatchers.IO) {
             repository.observeApproval().collect { set ->
                 Log.d("observeApproval", set.points.toString())

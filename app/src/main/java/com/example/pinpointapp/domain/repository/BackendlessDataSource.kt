@@ -16,5 +16,10 @@ interface BackendlessDataSource {
     suspend fun savePointSet(setObjectId: String, userObjectId: String): Int
     suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int
 
+    suspend fun checkPinnedSet(setObjectId: String, userObjectId: String): List<PointSet>
+
+    suspend fun pinPointSet(setObjectId: String, userObjectId: String): Int
+
+    suspend fun unpinPointSet(setObjectId: String, userObjectId: String): Int
 
 }

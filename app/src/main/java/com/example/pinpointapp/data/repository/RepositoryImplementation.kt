@@ -46,4 +46,16 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun unsavePointSet(setObjectId: String, userObjectId: String): Int {
         return backendlessDataSource.unsavePointSet(setObjectId, userObjectId)
     }
+
+    override suspend fun checkPinnedSet(setObjectId: String, userObjectId: String): List<PointSet> {
+        return backendlessDataSource.checkPinnedSet(setObjectId, userObjectId)
+    }
+
+    override suspend fun pinPointSet(setObjectId: String, userObjectId: String): Int {
+        return backendlessDataSource.pinPointSet(setObjectId, userObjectId)
+    }
+
+    override suspend fun unpinPointSet(setObjectId: String, userObjectId: String): Int {
+        return backendlessDataSource.unpinPointSet(setObjectId, userObjectId)
+    }
 }

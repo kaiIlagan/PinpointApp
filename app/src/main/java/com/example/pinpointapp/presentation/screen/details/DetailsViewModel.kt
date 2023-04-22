@@ -25,6 +25,8 @@ class DetailsViewModel @Inject constructor(
     var isSaved by mutableStateOf(false)
         private set
 
+    var isPinned by mutableStateOf(false)
+
     var selectedSet by mutableStateOf(PointSet())
         private set
 
@@ -34,6 +36,7 @@ class DetailsViewModel @Inject constructor(
     fun updateSelectedSet(pointSet: PointSet) {
         selectedSet = pointSet
         checkSavedSet(pointSet.objectId!!)
+        checkPinnedSet(pointSet.objectId!!)
     }
 
     private fun checkSavedSet(objectId: String) {
@@ -46,6 +49,17 @@ class DetailsViewModel @Inject constructor(
             Log.d("checkSavedSet", result.toString())
             Log.d("checkSavedSet", "${result.any { it.objectId == objectId }}")
             isSaved = result.any { it.objectId == objectId }
+        }
+    }
+
+    private fun checkPinnedSet(objectId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.checkPinnedSet(
+                setObjectId = objectId,
+                userObjectId = Backendless.UserService.CurrentUser().objectId
+            )
+
+            isPinned = result.any { it.objectId == objectId }
         }
     }
 
@@ -73,10 +87,38 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun pinPointSet() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = repository.pinPointSet(
+                    setObjectId = selectedSet!!.objectId!!,
+                    userObjectId = Backendless.UserService.CurrentUser().objectId
+                )
+
+                if (result == 0) {
+                    repository.unsavePointSet(
+                        setObjectId = selectedSet!!.objectId!!,
+                        userObjectId = Backendless.UserService.CurrentUser().objectId
+                    )
+                    isPinned = false
+                    _uiEvent.send(DetailsScreenUIEvent.unPinSet)
+                } else if (result > 0) {
+                    isPinned = true
+                    _uiEvent.send(DetailsScreenUIEvent.PinSet)
+                }
+            } catch (e: Exception) {
+                _uiEvent.send(DetailsScreenUIEvent.Error(text = isConnectionError(message = e.message.toString())))
+            }
+        }
+    }
 }
 
 sealed class DetailsScreenUIEvent(val message: String) {
     object SaveSet : DetailsScreenUIEvent(message = "Saved!")
     object unSaveSet : DetailsScreenUIEvent(message = "Removed from Saved!")
+    object PinSet : DetailsScreenUIEvent(message = "Pinend!")
+    object unPinSet : DetailsScreenUIEvent(message = "Removed from Pinned!")
+
     data class Error(val text: String) : DetailsScreenUIEvent(message = text)
 }
