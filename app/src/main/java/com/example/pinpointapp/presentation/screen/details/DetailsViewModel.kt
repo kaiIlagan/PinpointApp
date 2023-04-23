@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewModelScope
 import com.backendless.Backendless
 import com.example.pinpointapp.domain.model.PointSet
@@ -112,13 +113,42 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun addLike(userObjectId: String = Backendless.UserService.CurrentUser().objectId) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = repository.addLike(selectedSet.objectId!!, userObjectId)
+                Log.d("addLike", result.toString())
+                if (result == 0) {
+                    repository.removeLike(
+                        setObjectId = selectedSet.objectId!!,
+                        userObjectId = userObjectId
+                    )
+                    selectedSet =
+                        selectedSet.totalLikes?.minus(1).let { selectedSet.copy(totalLikes = it) }
+                    _uiEvent.send(DetailsScreenUIEvent.unLikeSet)
+                } else if (result != null && result > 0) {
+                    selectedSet =
+                        selectedSet.totalLikes?.plus(1).let { selectedSet.copy(totalLikes = it) }
+                    _uiEvent.send(DetailsScreenUIEvent.LikeSet)
+                }
+            } catch (e: Exception) {
+                _uiEvent.send(DetailsScreenUIEvent.Error(text = isConnectionError(message = e.message.toString())))
+            }
+        }
+    }
 }
+
 
 sealed class DetailsScreenUIEvent(val message: String) {
     object SaveSet : DetailsScreenUIEvent(message = "Saved!")
     object unSaveSet : DetailsScreenUIEvent(message = "Removed from Saved!")
-    object PinSet : DetailsScreenUIEvent(message = "Pinend!")
+    object PinSet : DetailsScreenUIEvent(message = "Pinned!")
     object unPinSet : DetailsScreenUIEvent(message = "Removed from Pinned!")
 
+    object LikeSet : DetailsScreenUIEvent(message = "Liked!")
+    object unLikeSet : DetailsScreenUIEvent(message = "Removed from Liked!")
+
     data class Error(val text: String) : DetailsScreenUIEvent(message = text)
+    //Maybe Copy Points for google maps?
 }

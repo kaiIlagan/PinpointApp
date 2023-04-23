@@ -58,4 +58,12 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun unpinPointSet(setObjectId: String, userObjectId: String): Int {
         return backendlessDataSource.unpinPointSet(setObjectId, userObjectId)
     }
+
+    override suspend fun addLike(setObjectId: String, userObjectId: String): Int? {
+        return backendlessDataSource.addLike(setObjectId, userObjectId)
+    }
+
+    override suspend fun removeLike(setObjectId: String, userObjectId: String): Int? {
+        return backendlessDataSource.removeLike(setObjectId, userObjectId)
+    }
 }

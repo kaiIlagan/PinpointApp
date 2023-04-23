@@ -21,4 +21,7 @@ interface Repository {
     suspend fun pinPointSet(setObjectId: String, userObjectId: String): Int
 
     suspend fun unpinPointSet(setObjectId: String, userObjectId: String): Int
+
+    suspend fun addLike(setObjectId: String, userObjectId: String): Int?
+    suspend fun removeLike(setObjectId: String, userObjectId: String): Int?
 }

@@ -66,11 +66,11 @@ fun DetailsScreen(
                 },
                 text = {
                     Text(
-                        text = "${pointSet.totalLikes ?: "0"}",
+                        text = "${selectedSet.totalLikes ?: "0"}",
                         color = Color.White
                     )
                 },
-                onClick = { })
+                onClick = { detailsViewModel.addLike() })
         }
     )
 }

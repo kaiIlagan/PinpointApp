@@ -284,4 +284,46 @@ class BackendlessDataSourceImplementation @Inject constructor(
             )
         }
     }
+
+    override suspend fun addLike(setObjectId: String, userObjectId: String): Int? {
+        return suspendCoroutine { continuation ->
+            backendless.of(PointSet::class.java).addRelation(
+                PointSet(objectId = setObjectId),
+                "likes",
+                arrayListOf(Users(objectId = userObjectId)),
+                object : AsyncCallback<Int> {
+                    override fun handleResponse(response: Int?) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
+        }
+    }
+
+    override suspend fun removeLike(setObjectId: String, userObjectId: String): Int? {
+        return suspendCoroutine { continuation ->
+            backendless.of(PointSet::class.java).deleteRelation(
+                PointSet(objectId = setObjectId),
+                "likes",
+                arrayListOf(Users(objectId = userObjectId)),
+                object : AsyncCallback<Int> {
+                    override fun handleResponse(response: Int?) {
+                        Log.d("removeLike", response.toString())
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
+        }
+    }
+
 }

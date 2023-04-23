@@ -22,4 +22,8 @@ interface BackendlessDataSource {
 
     suspend fun unpinPointSet(setObjectId: String, userObjectId: String): Int
 
+    suspend fun addLike(setObjectId: String, userObjectId: String): Int?
+
+    suspend fun removeLike(setObjectId: String, userObjectId: String): Int?
+
 }
