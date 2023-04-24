@@ -20,6 +20,7 @@ fun SavedScreen(
     val savedSets = savedViewModel.savedSets
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val requestState = savedViewModel.requestState
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -44,7 +45,11 @@ fun SavedScreen(
                 })
         },
         content = {
-            SavedContent(navController = navController, savedSet = savedSets)
+            SavedContent(
+                navController = navController,
+                savedSet = savedSets,
+                requestState = requestState
+            )
         }
     )
 }

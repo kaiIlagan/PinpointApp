@@ -12,26 +12,43 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.presentation.components.DefaultContent
+import com.example.pinpointapp.util.RequestState
 
 @Composable
 fun SavedContent(
     navController: NavHostController,
-    savedSet: List<PointSet>
+    savedSet: List<PointSet>,
+    requestState: RequestState
 ) {
-    if (savedSet.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "No Saved Sets",
-                style = TextStyle(
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    fontWeight = FontWeight.Bold
-                )
-            )
+    when (requestState) {
+        is RequestState.Success -> {
+            if (savedSet.isEmpty()) {
+                NoSavedPalettes()
+            } else {
+                DefaultContent(navController = navController, pointSets = savedSet)
+            }
         }
-    } else {
-        DefaultContent(navController = navController, pointSets = savedSet)
+        is RequestState.Error -> {
+            if (savedSet.isEmpty()) {
+                NoSavedPalettes()
+            }
+        }
+        else -> {}
+    }
+}
+
+@Composable
+fun NoSavedPalettes() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "No Saved Point Sets",
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.h5.fontSize,
+                fontWeight = FontWeight.Bold
+            )
+        )
     }
 }
