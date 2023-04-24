@@ -28,4 +28,6 @@ interface BackendlessDataSource {
     suspend fun getSavedSets(userObjectId: String): List<PointSet>
     suspend fun observeSavedSets(userObjectId: String): Flow<RelationStatus?>
 
+    suspend fun getPinnedSets(userObjectId: String): List<PointSet>
+    suspend fun observePinnedSets(userObjectId: String): Flow<RelationStatus?>
 }

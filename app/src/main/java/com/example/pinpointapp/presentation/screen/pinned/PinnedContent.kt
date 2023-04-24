@@ -1,5 +1,6 @@
-package com.example.pinpointapp.presentation.screen.saved
+package com.example.pinpointapp.presentation.screen.pinned
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -15,22 +16,22 @@ import com.example.pinpointapp.presentation.components.DefaultContent
 import com.example.pinpointapp.util.RequestState
 
 @Composable
-fun SavedContent(
+fun PinnedContent(
     navController: NavHostController,
-    savedSet: List<PointSet>,
+    pinnedSet: List<PointSet>,
     requestState: RequestState
 ) {
     when (requestState) {
         is RequestState.Success -> {
-            if (savedSet.isEmpty()) {
-                NoSavedSets()
+            if (pinnedSet.isEmpty()) {
+                NoPinnedSets()
             } else {
-                DefaultContent(navController = navController, pointSets = savedSet)
+                DefaultContent(navController = navController, pointSets = pinnedSet)
             }
         }
         is RequestState.Error -> {
-            if (savedSet.isEmpty()) {
-                NoSavedSets()
+            if (pinnedSet.isEmpty()) {
+                NoPinnedSets()
             }
         }
         else -> {}
@@ -38,13 +39,13 @@ fun SavedContent(
 }
 
 @Composable
-fun NoSavedSets() {
+fun NoPinnedSets() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "No Saved Point Sets",
+            text = "No Pinned Point Sets",
             style = TextStyle(
                 fontSize = MaterialTheme.typography.h5.fontSize,
                 fontWeight = FontWeight.Bold

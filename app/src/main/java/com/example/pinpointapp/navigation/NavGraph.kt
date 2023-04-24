@@ -11,6 +11,7 @@ import com.example.pinpointapp.presentation.screen.data.DataScreen
 import com.example.pinpointapp.presentation.screen.details.DetailsScreen
 import com.example.pinpointapp.presentation.screen.map.MapScreen
 import com.example.pinpointapp.presentation.screen.login.LoginScreen
+import com.example.pinpointapp.presentation.screen.pinned.PinnedScreen
 import com.example.pinpointapp.presentation.screen.saved.SavedScreen
 
 // Please see readme.txt for attributions of code
@@ -34,7 +35,9 @@ fun SetupNavGraph(navController: NavHostController) {
                 DetailsScreen(navController = navController, pointSet = selectedSet)
             }
         }
-        composable(route = Screen.Pinned.route) {}
+        composable(route = Screen.Pinned.route) {
+            PinnedScreen(navController = navController)
+        }
         composable(route = Screen.Saved.route) {
             SavedScreen(navController = navController)
         }

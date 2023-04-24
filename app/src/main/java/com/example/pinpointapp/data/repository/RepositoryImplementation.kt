@@ -74,4 +74,12 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun observeSavedSets(userObjectId: String): Flow<RelationStatus?> {
         return backendlessDataSource.observeSavedSets(userObjectId)
     }
+
+    override suspend fun getPinnedSets(userObjectId: String): List<PointSet> {
+        return backendlessDataSource.getPinnedSets(userObjectId)
+    }
+
+    override suspend fun observePinnedSets(userObjectId: String): Flow<RelationStatus?> {
+        return backendlessDataSource.observePinnedSets(userObjectId)
+    }
 }

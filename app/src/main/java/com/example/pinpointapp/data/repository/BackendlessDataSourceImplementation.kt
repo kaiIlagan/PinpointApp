@@ -370,4 +370,46 @@ class BackendlessDataSourceImplementation @Inject constructor(
         }
     }
 
+    override suspend fun getPinnedSets(userObjectId: String): List<PointSet> {
+        val relationQuery: LoadRelationsQueryBuilder<PointSet> =
+            LoadRelationsQueryBuilder.of(PointSet::class.java)
+        relationQuery.setRelationName("pinned")
+
+        return suspendCoroutine { continuation ->
+            Backendless.Data.of(Users::class.java).loadRelations(
+                userObjectId,
+                relationQuery,
+                object : AsyncCallback<List<PointSet>> {
+                    override fun handleResponse(response: List<PointSet>) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+                }
+
+            )
+        }
+    }
+
+    override suspend fun observePinnedSets(userObjectId: String): Flow<RelationStatus?> {
+        return callbackFlow {
+            val realTime = backendless.of(Users::class.java).rt()
+            val callback = object : AsyncCallback<RelationStatus> {
+                override fun handleResponse(response: RelationStatus?) {
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            realTime.addDeleteRelationListener("pinned", listOf(userObjectId), callback)
+            awaitClose {
+                realTime.removeDeleteListeners()
+            }
+        }
+    }
+
 }
