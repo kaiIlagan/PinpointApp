@@ -2,10 +2,12 @@ package com.example.pinpointapp.data.repository
 
 import android.graphics.Point
 import android.util.Log
+import com.backendless.Backendless
 import com.backendless.Persistence
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
+import com.backendless.persistence.LoadRelationsQueryBuilder
 import com.backendless.rt.data.RelationStatus
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.domain.model.Users
@@ -323,6 +325,48 @@ class BackendlessDataSourceImplementation @Inject constructor(
 
                 }
             )
+        }
+    }
+
+    override suspend fun getSavedSets(userObjectId: String): List<PointSet> {
+        val relationQuery: LoadRelationsQueryBuilder<PointSet> =
+            LoadRelationsQueryBuilder.of(PointSet::class.java)
+        relationQuery.setRelationName("saved")
+
+        return suspendCoroutine { continuation ->
+            Backendless.Data.of(Users::class.java).loadRelations(
+                userObjectId,
+                relationQuery,
+                object : AsyncCallback<List<PointSet>> {
+                    override fun handleResponse(response: List<PointSet>) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+                }
+
+            )
+        }
+    }
+
+    override suspend fun observeSavedSets(userObjectId: String): Flow<RelationStatus?> {
+        return callbackFlow {
+            val realTime = backendless.of(Users::class.java).rt()
+            val callback = object : AsyncCallback<RelationStatus> {
+                override fun handleResponse(response: RelationStatus?) {
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            realTime.addDeleteRelationListener("saved", listOf(userObjectId), callback)
+            awaitClose {
+                realTime.removeDeleteListeners()
+            }
         }
     }
 

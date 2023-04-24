@@ -25,5 +25,7 @@ interface BackendlessDataSource {
     suspend fun addLike(setObjectId: String, userObjectId: String): Int?
 
     suspend fun removeLike(setObjectId: String, userObjectId: String): Int?
+    suspend fun getSavedSets(userObjectId: String): List<PointSet>
+    suspend fun observeSavedSets(userObjectId: String): Flow<RelationStatus?>
 
 }

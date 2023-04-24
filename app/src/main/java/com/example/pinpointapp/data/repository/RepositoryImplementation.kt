@@ -66,4 +66,12 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun removeLike(setObjectId: String, userObjectId: String): Int? {
         return backendlessDataSource.removeLike(setObjectId, userObjectId)
     }
+
+    override suspend fun getSavedSets(userObjectId: String): List<PointSet> {
+        return backendlessDataSource.getSavedSets(userObjectId)
+    }
+
+    override suspend fun observeSavedSets(userObjectId: String): Flow<RelationStatus?> {
+        return backendlessDataSource.observeSavedSets(userObjectId)
+    }
 }
