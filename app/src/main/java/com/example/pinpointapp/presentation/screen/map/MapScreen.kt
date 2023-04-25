@@ -5,17 +5,23 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.pinpointapp.presentation.components.NavigationDrawer
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MapScreen(navController: NavHostController) {
+fun MapScreen(
+    navController: NavHostController,
+    mapViewModel: MapViewModel = hiltViewModel()
+) {
+    val mapSets = mapViewModel.mapSets
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        drawerGesturesEnabled = false,
         scaffoldState = scaffoldState,
         topBar = { MapTopBar(scaffoldState = scaffoldState) },
         drawerContent = {
@@ -33,7 +39,9 @@ fun MapScreen(navController: NavHostController) {
             )
         },
         content = {
-            MapContent()
+            MapContent(
+                mapSets = mapSets
+            )
         }
     )
 }

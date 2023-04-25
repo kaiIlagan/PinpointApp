@@ -1,21 +1,48 @@
 package com.example.pinpointapp.presentation.screen.map
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
+import androidx.navigation.NavHostController
+import com.example.pinpointapp.domain.model.PointSet
+import com.example.pinpointapp.presentation.screen.getLineString
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapContent() {
-    val singapore = LatLng(46.56002988360198, -87.40757001632488)
+fun MapContent(
+    mapSets: List<PointSet>
+) {
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        if (mapSets.isNotEmpty()) {
+            position = CameraPosition.fromLatLngZoom(
+                LatLng(
+                    getLineString(mapSets[0]).points[0].y,
+                    getLineString(mapSets[0]).points[0].x
+                ), 10f
+            )
+        } else {
+            Log.d("MapContent", "EMPTY")
+        }
     }
+
+
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
-    )
+    ) {
+        mapSets.forEach { pointSet ->
+            var lineString = getLineString(pointSet)
+            lineString!!.points.forEach {
+                Marker(
+                    MarkerState((LatLng(it.y, it.x))),
+                    title = pointSet.title
+                )
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.pinpointapp.presentation.screen.map
 
+import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -10,6 +11,7 @@ import com.example.pinpointapp.ui.theme.topAppBarBackgroundColor
 import com.example.pinpointapp.ui.theme.topAppBarContentColor
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MapTopBar(scaffoldState: ScaffoldState) {
     val scope = rememberCoroutineScope()

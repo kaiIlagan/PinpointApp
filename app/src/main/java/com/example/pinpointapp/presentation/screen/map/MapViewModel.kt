@@ -1,9 +1,11 @@
-package com.example.pinpointapp.presentation.screen.pinned
+package com.example.pinpointapp.presentation.screen.map
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.backendless.Backendless
@@ -16,35 +18,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PinnedViewModel @Inject constructor(
+class MapViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _pinnedSets = mutableStateListOf<PointSet>()
-    val pinnedSets: List<PointSet> = _pinnedSets
-
-    var requestState by mutableStateOf<RequestState>(RequestState.Idle)
-        private set
+    private val _mapSets = mutableStateListOf<PointSet>()
+    val mapSets: List<PointSet> = _mapSets
 
     init {
-        getPinnedSets()
+        getMapSets()
         viewModelScope.launch {
             repository.observePinnedSets(Backendless.UserService.CurrentUser().objectId)
                 .collect { status ->
-                    _pinnedSets.removeAll {
+                    _mapSets.removeAll {
                         it.objectId == status?.children?.first()
                     }
                 }
         }
     }
 
-    private fun getPinnedSets() {
-        requestState = RequestState.Loading
+    private fun getMapSets() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = _pinnedSets.addAll(
+            _mapSets.addAll(
                 repository.getPinnedSets(Backendless.UserService.CurrentUser().objectId)
             )
-            requestState = if (result) RequestState.Success else RequestState.Error
+            mapSets.forEach {
+                Log.d("getMapSets", it.toString())
+            }
         }
     }
 }
