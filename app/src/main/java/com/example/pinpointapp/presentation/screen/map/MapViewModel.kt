@@ -29,13 +29,13 @@ class MapViewModel @Inject constructor(
         getMapSets()
         viewModelScope.launch {
             repository.observePinnedSets(Backendless.UserService.CurrentUser().objectId)
-                .collect { status ->
-                    _mapSets.removeAll {
-                        it.objectId == status?.children?.first()
-                    }
+                .collect {
+                    _mapSets.removeAll(_mapSets)
+                    getMapSets()
                 }
         }
     }
+
 
     private fun getMapSets() {
         viewModelScope.launch(Dispatchers.IO) {

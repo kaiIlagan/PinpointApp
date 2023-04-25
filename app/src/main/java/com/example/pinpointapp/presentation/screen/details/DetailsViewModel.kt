@@ -96,9 +96,9 @@ class DetailsViewModel @Inject constructor(
                     setObjectId = selectedSet!!.objectId!!,
                     userObjectId = Backendless.UserService.CurrentUser().objectId
                 )
-
+                Log.d("pinPointSet", result.toString())
                 if (result == 0) {
-                    repository.unsavePointSet(
+                    repository.unpinPointSet(
                         setObjectId = selectedSet!!.objectId!!,
                         userObjectId = Backendless.UserService.CurrentUser().objectId
                     )

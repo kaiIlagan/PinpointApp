@@ -12,6 +12,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlin.random.Random
 
 @Composable
 fun MapContent(
@@ -36,11 +37,13 @@ fun MapContent(
         cameraPositionState = cameraPositionState
     ) {
         mapSets.forEach { pointSet ->
+            var randColor = Random.nextInt(0, 360).toFloat()
             var lineString = getLineString(pointSet)
             lineString!!.points.forEach {
                 Marker(
                     MarkerState((LatLng(it.y, it.x))),
-                    title = pointSet.title
+                    title = pointSet.title,
+                    icon = BitmapDescriptorFactory.defaultMarker(randColor)
                 )
             }
         }

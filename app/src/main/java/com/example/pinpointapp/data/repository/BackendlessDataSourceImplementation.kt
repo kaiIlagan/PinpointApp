@@ -398,6 +398,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
             val realTime = backendless.of(Users::class.java).rt()
             val callback = object : AsyncCallback<RelationStatus> {
                 override fun handleResponse(response: RelationStatus?) {
+                    Log.d("ObservePinnedSets", response.toString())
                     trySendBlocking(response)
                 }
 
@@ -406,8 +407,10 @@ class BackendlessDataSourceImplementation @Inject constructor(
                 }
             }
             realTime.addDeleteRelationListener("pinned", listOf(userObjectId), callback)
+            realTime.addAddRelationListener("pinned", listOf(userObjectId), callback)
             awaitClose {
                 realTime.removeDeleteListeners()
+                realTime.removeAddRelationListeners()
             }
         }
     }
