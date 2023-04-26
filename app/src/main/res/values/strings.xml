@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PinpointApp</string>
+    <string name="app_name">Pin-Point</string>
     <string name="login_header">Login to Continue</string>
     <string name="login_subtitle"> In order to proceed,\nplease login.</string>
     <string name="submit_points"> Submit your Point(s) </string>
