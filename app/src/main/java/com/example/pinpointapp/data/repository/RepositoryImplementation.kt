@@ -32,7 +32,7 @@ class RepositoryImplementation @Inject constructor(
     }
 
     override suspend fun getLikeCount(objectId: String): PointSet {
-        return backendlessDataSource.getLikeCount(objectId = objectId)
+        return backendlessDataSource.getLikeCount(objectId)
     }
 
     override suspend fun checkSavedSet(setObjectId: String, userObjectId: String): List<PointSet> {
@@ -81,5 +81,13 @@ class RepositoryImplementation @Inject constructor(
 
     override suspend fun observePinnedSets(userObjectId: String): Flow<RelationStatus?> {
         return backendlessDataSource.observePinnedSets(userObjectId)
+    }
+
+    override suspend fun getSubmittedSets(userObjectId: String): List<PointSet> {
+        return backendlessDataSource.getSubmittedSets(userObjectId)
+    }
+
+    override suspend fun observeSubmittedSets(userObjectId: String): Flow<PointSet> {
+        return backendlessDataSource.observeSubmittedSets(userObjectId)
     }
 }

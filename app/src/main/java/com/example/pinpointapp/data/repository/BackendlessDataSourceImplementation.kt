@@ -415,4 +415,44 @@ class BackendlessDataSourceImplementation @Inject constructor(
         }
     }
 
+    override suspend fun getSubmittedSets(userObjectId: String): List<PointSet> {
+        val query = DataQueryBuilder.create()
+            .setWhereClause("ownerId = '$userObjectId'")
+
+        return suspendCoroutine { continuation ->
+            backendless.of(PointSet::class.java).find(
+                query,
+                object : AsyncCallback<List<PointSet>> {
+                    override fun handleResponse(response: List<PointSet>) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
+        }
+    }
+
+    override suspend fun observeSubmittedSets(userObjectId: String): Flow<PointSet> {
+        return callbackFlow {
+            val event = backendless.of(PointSet::class.java).rt()
+            val callback = object : AsyncCallback<PointSet> {
+                override fun handleResponse(response: PointSet) {
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            event.addCreateListener("ownerId = '$userObjectId' and approved = false", callback)
+            awaitClose {
+                event.removeCreateListeners()
+            }
+        }
+    }
+
 }
