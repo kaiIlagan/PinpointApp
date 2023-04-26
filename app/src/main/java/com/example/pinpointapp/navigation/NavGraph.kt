@@ -13,6 +13,7 @@ import com.example.pinpointapp.presentation.screen.map.MapScreen
 import com.example.pinpointapp.presentation.screen.login.LoginScreen
 import com.example.pinpointapp.presentation.screen.pinned.PinnedScreen
 import com.example.pinpointapp.presentation.screen.saved.SavedScreen
+import com.example.pinpointapp.presentation.screen.submitted.SubmittedScreen
 
 // Please see readme.txt for attributions of code
 @Composable
@@ -41,7 +42,9 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = Screen.Saved.route) {
             SavedScreen(navController = navController)
         }
-        composable(route = Screen.Submitted.route) {}
+        composable(route = Screen.Submitted.route) {
+            SubmittedScreen(navController = navController)
+        }
         composable(route = Screen.Create.route) {}
     }
 }
