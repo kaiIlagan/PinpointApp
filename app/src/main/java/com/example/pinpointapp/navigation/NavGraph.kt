@@ -3,8 +3,10 @@ package com.example.pinpointapp.navigation
 import android.graphics.Point
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.keys.Keys.SELECTED_POINTS_KEY
 import com.example.pinpointapp.presentation.screen.create.CreateScreen
@@ -20,7 +22,13 @@ import com.example.pinpointapp.presentation.screen.submitted.SubmittedScreen
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Login.route) {
-        composable(route = Screen.Login.route) {
+        composable(
+            route = Screen.Login.route,
+            arguments = listOf(navArgument(name = "signedInState", builder = {
+                type = NavType.BoolType
+                defaultValue = true
+            }))
+        ) {
             LoginScreen(navController = navController)
         }
         composable(route = Screen.Map.route) {

@@ -14,7 +14,6 @@ import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.example.pinpointapp.navigation.Screen
 import com.example.pinpointapp.presentation.screen.StartActivityForResult
-import com.example.pinpointapp.presentation.screen.logout
 import com.example.pinpointapp.presentation.screen.signIn
 
 // Please see readme.txt for attributions of code
@@ -66,8 +65,10 @@ fun LoginScreen(
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
-                        Log.e(tag, fault.toString())
-                        logout(onSuccess = {}, onFailed = {})
+                        loginViewModel.updateSignedInState(signedIn = false)
+                        if (fault != null) {
+                            loginViewModel.updateMessageBarState(message = fault.message)
+                        }
                     }
                 },
                 false
@@ -76,7 +77,6 @@ fun LoginScreen(
         onDialogDismissed = {
             loginViewModel.updateSignedInState(signedIn = false)
             loginViewModel.updateMessageBarState(message = it)
-
         },
         launcher = { activityLauncher ->
             if (signedInState) {

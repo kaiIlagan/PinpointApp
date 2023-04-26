@@ -91,7 +91,11 @@ fun DrawerBody(
                             logout(
                                 onSuccess = {
                                     navController.popBackStack()
-                                    navController.navigate(Screen.Login.route)
+                                    navController.navigate(
+                                        Screen.Login.passSignedInState(
+                                            signedInState = false
+                                        )
+                                    )
                                 },
                                 onFailed = logoutFailed
                             )
