@@ -90,4 +90,8 @@ class RepositoryImplementation @Inject constructor(
     override suspend fun observeSubmittedSets(userObjectId: String): Flow<PointSet> {
         return backendlessDataSource.observeSubmittedSets(userObjectId)
     }
+
+    override suspend fun submitSet(pointSet: PointSet): PointSet {
+        return backendlessDataSource.submitSet(pointSet)
+    }
 }

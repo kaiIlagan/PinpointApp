@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.pinpointapp.navigation.Screen
 import com.example.pinpointapp.presentation.components.NavigationDrawer
 import kotlinx.coroutines.launch
 
@@ -56,7 +57,7 @@ fun SubmittedScreen(
                 navController = navController,
                 submittedSets = submittedSets,
                 requestState = requestState,
-                onSubmitClicked = {})
+                onSubmitClicked = { navController.navigate(Screen.Create.route) })
         }
     )
 }

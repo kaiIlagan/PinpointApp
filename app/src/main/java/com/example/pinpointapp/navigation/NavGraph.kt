@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.keys.Keys.SELECTED_POINTS_KEY
+import com.example.pinpointapp.presentation.screen.create.CreateScreen
 import com.example.pinpointapp.presentation.screen.data.DataScreen
 import com.example.pinpointapp.presentation.screen.details.DetailsScreen
 import com.example.pinpointapp.presentation.screen.map.MapScreen
@@ -45,6 +46,8 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = Screen.Submitted.route) {
             SubmittedScreen(navController = navController)
         }
-        composable(route = Screen.Create.route) {}
+        composable(route = Screen.Create.route) {
+            CreateScreen(navController = navController)
+        }
     }
 }

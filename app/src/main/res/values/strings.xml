@@ -5,4 +5,5 @@
     <string name="submit_points"> Submit your Point(s) </string>
     <string name="submit_desc"> Feel free to create Point Sets for yourself and for the world to see. We\'d love to see them!</string>
     <string name="submit_button"> Submit Point(s) </string>
+    <string name="create_submit"> Submit Point Set </string>
 </resources>

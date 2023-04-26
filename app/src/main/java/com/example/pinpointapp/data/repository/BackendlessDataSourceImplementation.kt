@@ -455,4 +455,22 @@ class BackendlessDataSourceImplementation @Inject constructor(
         }
     }
 
+    override suspend fun submitSet(pointSet: PointSet): PointSet {
+        return suspendCoroutine { continuation ->
+            backendless.of(PointSet::class.java).save(
+                pointSet,
+                object : AsyncCallback<PointSet> {
+                    override fun handleResponse(response: PointSet) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+
+                }
+            )
+        }
+    }
+
 }
