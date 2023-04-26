@@ -10,10 +10,7 @@ import com.example.pinpointapp.domain.model.PointSet
 import com.example.pinpointapp.presentation.screen.getLineString
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 
 @Composable
 fun DetailsContent(
@@ -23,12 +20,12 @@ fun DetailsContent(
         mutableStateOf(getLineString(pointSet))
     }
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(
+    val cameraPositionState = CameraPositionState(
+        CameraPosition.fromLatLngZoom(
             LatLng(linesString!!.value.points[0].y, linesString!!.value.points[0].x),
             10f
         )
-    }
+    )
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
