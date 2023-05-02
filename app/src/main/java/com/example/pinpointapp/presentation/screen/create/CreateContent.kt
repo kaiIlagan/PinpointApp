@@ -110,8 +110,8 @@ fun CreateContent(onSubmitClicked: (String, String, LineString) -> Unit) {
                 val setTitle = title
                 val setDesc = desc
                 var dummy = Point()
-                dummy.x = 0.0
-                dummy.y = 0.0
+                dummy.x = 132.1
+                dummy.y = 132.1
                 addedPoints.add(dummy)
                 val setPoints = LineString(addedPoints)
                 onSubmitClicked(setTitle, setDesc, setPoints)
