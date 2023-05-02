@@ -31,6 +31,8 @@ fun DetailsContent(
         cameraPositionState = cameraPositionState
     ) {
         Log.d("lineString", linesString.toString())
+        linesString!!.value.points.removeAt(linesString.value.points.lastIndex)
+        Log.d("lineString remove last", linesString.toString())
         linesString!!.value.points.forEach {
             Log.d("lineString", "${it.x} , ${it.y}")
             Marker(MarkerState((LatLng(it.y, it.x))), title = pointSet.title)

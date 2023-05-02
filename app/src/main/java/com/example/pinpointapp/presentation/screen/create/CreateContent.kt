@@ -90,10 +90,7 @@ fun CreateContent(onSubmitClicked: (String, String, LineString) -> Unit) {
                     addedPoints.add(point)
                 },
                 onMapLongClick = { coord ->
-                    var point = Point()
-                    point.x = coord.longitude
-                    point.y = coord.latitude
-                    addedPoints.remove(point)
+                    addedPoints.removeLastOrNull()
                 }
             ) {
                 addedPoints.forEach {
@@ -112,6 +109,10 @@ fun CreateContent(onSubmitClicked: (String, String, LineString) -> Unit) {
             onClick = {
                 val setTitle = title
                 val setDesc = desc
+                var dummy = Point()
+                dummy.x = 0.0
+                dummy.y = 0.0
+                addedPoints.add(dummy)
                 val setPoints = LineString(addedPoints)
                 onSubmitClicked(setTitle, setDesc, setPoints)
             },
@@ -127,4 +128,10 @@ fun CreateContent(onSubmitClicked: (String, String, LineString) -> Unit) {
         }
 
     }
+}
+
+@Preview
+@Composable
+fun CreatePreview() {
+    CreateContent(onSubmitClicked = { title, desc, points -> })
 }

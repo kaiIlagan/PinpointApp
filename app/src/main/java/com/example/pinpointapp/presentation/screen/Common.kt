@@ -115,7 +115,9 @@ fun logout(onSuccess: () -> Unit, onFailed: () -> Unit) {
 }
 
 fun getLineString(pointSet: PointSet): LineString {
-    return pointSet.points as LineString
+    var parsed = pointSet.points as LineString
+    val list = LineString(parsed.points.dropLast(1).toMutableList())
+    return list
 }
 
 fun isConnectionError(message: String): String {

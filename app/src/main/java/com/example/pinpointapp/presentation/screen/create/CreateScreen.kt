@@ -6,8 +6,10 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pinpointapp.domain.model.PointSet
 import kotlinx.coroutines.flow.collect
 
@@ -19,7 +21,6 @@ fun CreateScreen(
 ) {
 
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = Unit) {
         createViewModel.uiEvent.collect {
