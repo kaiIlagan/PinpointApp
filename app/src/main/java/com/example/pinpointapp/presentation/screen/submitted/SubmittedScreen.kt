@@ -30,7 +30,7 @@ fun SubmittedScreen(
             SubmittedTopBar(
                 submittedSets = submittedSets,
                 requestState = requestState,
-                onSubmitClicked = { },
+                onSubmitClicked = { navController.navigate(Screen.Create.route) },
                 onMenuClicked = {
                     scope.launch {
                         scaffoldState.drawerState.open()
@@ -57,7 +57,9 @@ fun SubmittedScreen(
                 navController = navController,
                 submittedSets = submittedSets,
                 requestState = requestState,
-                onSubmitClicked = { navController.navigate(Screen.Create.route) })
+                onSubmitClicked = {
+                    navController.navigate(Screen.Create.route)
+                })
         }
     )
 }

@@ -79,7 +79,7 @@ fun PointSet(pointSet: PointSet) {
             lineString = LineString(emptyList())
         }
         val numOfPoints =
-            lineString!!.points.size - 1 // -1 To Remove Dummy Value (So you can add 1 point if needed!
+            lineString!!.points.size - 1 // -1 To Remove Dummy Value (So you can add 1 point if needed!)
         pointSet.title?.let { Text(it) }
         pointSet.desc?.let { Text(it) }
         if (numOfPoints > 1) {
