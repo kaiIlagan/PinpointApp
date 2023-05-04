@@ -18,7 +18,10 @@ import com.example.pinpointapp.presentation.screen.pinned.PinnedScreen
 import com.example.pinpointapp.presentation.screen.saved.SavedScreen
 import com.example.pinpointapp.presentation.screen.submitted.SubmittedScreen
 
-// Please see readme.txt for attributions of code
+// Code modeled after Stefan Jovanic from Udemy Course: Android & Web App Development using the Backendless Platform and modified for Senior Project use
+//Linked here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/
+// as well as Backendless documentation here: https://backendless.com/docs/android/
+
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Login.route) {

@@ -22,9 +22,15 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+// Code modeled after Stefan Jovanic from Udemy Course: Android & Web App Development using the Backendless Platform and modified for Senior Project use
+//Linked here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/
+// as well as Backendless documentation here: https://backendless.com/docs/android/
+
 class BackendlessDataSourceImplementation @Inject constructor(
     private val backendless: Persistence
 ) : BackendlessDataSource {
+
+    // Gets Point Sets from Backendless (SQLite Database) through a query, specifying wanting only those that are approved
     override suspend fun getPointSets(): List<PointSet> {
         val queryBuilder: DataQueryBuilder = DataQueryBuilder
             .create()
@@ -38,7 +44,7 @@ class BackendlessDataSourceImplementation @Inject constructor(
             )
             .setWhereClause("approved = true")
             .setGroupBy("objectId")
-        return suspendCoroutine { continuation ->
+        return suspendCoroutine { continuation -> //Coroutines are like very tiny threads that allow for processes to be run in the background, A suspend co-routines allows a coroutine to be asynchronous.
             backendless.of(PointSet::class.java)
                 .find(queryBuilder, object : AsyncCallback<List<PointSet>> {
                     override fun handleResponse(response: List<PointSet>) {
@@ -55,20 +61,24 @@ class BackendlessDataSourceImplementation @Inject constructor(
         }
     }
 
+    // Flows are a asynchronous data stream that returns values that need to be collected
     //Notifies client applications when a like is added to a Point Set
     override suspend fun observeAddRelation(): Flow<RelationStatus?> {
         return callbackFlow {
             val event = backendless.of(PointSet::class.java).rt()
             val callback = object : AsyncCallback<RelationStatus> {
                 override fun handleResponse(response: RelationStatus?) {
-                    trySendBlocking(response)
+                    trySendBlocking(response) //Ask for the next Point Set based on the response. Null if end of DataStream, Faults into function below otherwise
                 }
 
                 override fun handleFault(fault: BackendlessFault?) {
-                    fault?.message?.let { cancel(message = it) }
+                    fault?.message?.let { cancel(message = it) } // Calls the function with this value as it's parameter (in this case: fault?.message?)
                 }
             }
-            event.addAddRelationListener("likes", callback)
+            event.addAddRelationListener(
+                "likes",
+                callback
+            ) //Add AddRelation relation listener to notify when a new relation between Point Set and a User is created to update the like count +1
             awaitClose {
                 event.removeAddRelationListeners()
             }

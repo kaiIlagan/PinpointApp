@@ -4,4 +4,5 @@
     <style name="Theme.PinpointApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/green_700</item>
     </style>
+
 </resources>

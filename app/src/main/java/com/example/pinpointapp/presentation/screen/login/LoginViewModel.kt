@@ -11,6 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+// Code modeled after Stefan Jovanic from Udemy Course: Android & Web App Development using the Backendless Platform and modified for Senior Project use
+//Linked here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/
+// as well as Backendless documentation here: https://backendless.com/docs/android/
 class LoginViewModel(
     savedStateHandle: SavedStateHandle //Handles arguments sent by navigation compose for login
 ) : ViewModel() {

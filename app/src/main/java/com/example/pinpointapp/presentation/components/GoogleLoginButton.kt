@@ -18,7 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-// Please see readme.txt for attributions of code
+// Code modeled after  Stefan Jovanic from Udemy Course: Android & Web App Development using the Backendless Platform
+//Linked here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/
+// as well as Backendless documentation here: https://backendless.com/docs/android/
+
 @Composable
 fun GoogleLoginButton(
     modifier: Modifier = Modifier,

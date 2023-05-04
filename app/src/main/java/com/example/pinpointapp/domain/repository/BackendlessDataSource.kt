@@ -5,7 +5,11 @@ import com.backendless.rt.data.RelationStatus
 import com.example.pinpointapp.domain.model.PointSet
 import kotlinx.coroutines.flow.Flow
 
-interface BackendlessDataSource {
+// Code modeled after Stefan Jovanic from Udemy Course: Android & Web App Development using the Backendless Platform and modified for Senior Project use
+//Linked here: https://www.udemy.com/course/android-web-app-development-using-the-backendless-platform/
+// as well as Backendless documentation here: https://backendless.com/docs/android/
+
+interface BackendlessDataSource { //Interface only contains Function Prototypes
     suspend fun getPointSets(): List<PointSet> // Get Point Sets to populate Data Screen through DataViewModel, using data from
     suspend fun observeAddRelation(): Flow<RelationStatus?> // Observer for when a Point Set is liked and a User is "added" to that relation
     suspend fun observeDeleteRelation(): Flow<RelationStatus?> // Observer for when a Point Set is unliked and a User is "deleted" from that relation
