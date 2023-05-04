@@ -115,6 +115,9 @@ fun CreateContent(onSubmitClicked: (String, String, LineString) -> Unit) {
                 addedPoints.add(dummy)
                 val setPoints = LineString(addedPoints)
                 onSubmitClicked(setTitle, setDesc, setPoints)
+                title = ""
+                desc = ""
+                addedPoints.removeAll(addedPoints)
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)
         ) {
